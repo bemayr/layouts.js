@@ -1,20 +1,20 @@
 ﻿function initializeGridLayout() {
-    $('div[data-gridlayout]').each(function () {
-        var container = $(this);
+    for (var grid of document.querySelectorAll('div[data-gridlayout]')) {
+        console.log(grid);
 
         var columndefinitions = [];
         var rowdefinitions = [];
 
         // Set Columns
         GetDefinitionList(
-            container,
+            grid,
             'div[data-columndefinitions]',
             'div[data-columndefinition]',
             'data-columndefinition',
             function (columns, sumPercentageColumns) {
                 columndefinitions =
                     SetAutoDefinitions(
-                        container,
+                        grid,
                         SetPercentageDefinitions(columns, sumPercentageColumns),
                         'div[data-column="{0}"]',
                         function (element) {
@@ -26,14 +26,14 @@
         );
         // Set Rows
         GetDefinitionList(
-            container,
+            grid,
             'div[data-rowdefinitions]',
             'div[data-rowdefinition]',
             'data-rowdefinition',
             function (rows, sumPercentageRows) {
                 rowdefinitions =
                     SetAutoDefinitions(
-                        container,
+                        grid,
                         SetPercentageDefinitions(rows, sumPercentageRows),
                         'div[data-row="{0}"]',
                         function (element) {
@@ -45,8 +45,13 @@
         );
 
         // Set Children Measurements
-        container.children(':not(div[data-columndefinitions],div[data-rowdefinitions])').each(function () {
-            var cell = $(this);
+        for(var cell in grid.childNodes) {
+            if(cell.nodeType == 1 &&  !cell.hasAttribute('data-columndefinitions') &&
+               !cell.hasAttribute('data-rowdefinitions')) {
+
+
+//       grid.childNodes(':not(div[data-columndefinitions],div[data-rowdefinitions])').each(function () {
+            //var cell = $(this);
             var column = ClearUndefined($(this).attr('data-column'), 0);
             var row = ClearUndefined($(this).attr('data-row'), 0);
             var columnspan = ClearUndefined($(this).attr('data-columnspan'), 1);
@@ -63,27 +68,33 @@
             //console.log("t: " + top);
 
             cell.css({ width: width, height: height, left: left, top: top });
-        });
+        }
+        };
 
-    });
+    };
 }
 
 function GetDefinitionList(container, rootselector, subselector, attribute, callback) {
     var definitions = [];
     var sumPercentages = 0;
-    container.children(rootselector).each(function () {
-        $(this).children(subselector).each(function (i) {
-            var definition = $(this).attr(attribute);
-            definitions[i] = definition;
-            if (definition.indexOf("*") != -1) {
-                var prefix = parseFloat(definition);
-                if (isNaN(prefix)) {
-                    prefix = 1;
+    for(var definitionContainer in container.childNodes) {
+        if(definitionContainer.nodeType == 1 && definitionContainer.hasAttribute(rootselector)) {
+            var i = 0;
+            for(var definition in definitionContainer.childNodes) {
+                if(definition.hasAttribute(subselector)) {
+                    var definition = definition.getAttribute(attribute);
+                    definitions[i++] = definition;
+                    if (definition.indexOf("*") != -1) {
+                        var prefix = parseFloat(definition);
+                        if (isNaN(prefix)) {
+                            prefix = 1;
+                        }
+                        sumPercentages += prefix;
+                    }
                 }
-                sumPercentages += prefix;
             }
-        });
-    });
+        }
+    }
     if (definitions - length == 0) {
         definitions[0] = "*";
         sumPercentages = 1;
