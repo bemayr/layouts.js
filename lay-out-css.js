@@ -15,7 +15,7 @@
                     SetAutoDefinitions(
                         grid,
                         SetPercentageDefinitions(columns, sumPercentageColumns),
-                        'div[data-column="{0}"]',
+                        "div[data-column='{0}']",
                         function (element) {
                             return element.width();
                         }
@@ -84,7 +84,6 @@ function GetDefinitionList(container, parentAttr, childAttr, callback) {
                 if(definition.nodeType == 1 && definition.hasAttribute(childAttr)) {
                     var definition = definition.getAttribute(childAttr);
                     definitions[k++] = definition;
-                    console.log(definitions);
                     if (definition.indexOf("*") != -1) {
                         var prefix = parseFloat(definition);
                         if (isNaN(prefix)) {
@@ -118,7 +117,7 @@ function SetAutoDefinitions(container, definitions, selector, sizeHandler) {
     definitions.forEach(function (element, index) {
         if (element == "auto") {
             definitions[index] = "0px";
-            container.children(selector.replace(/\{0\}/, index)).each(function () {
+            container.queryChildren(selector.replace(/\{0\}/, index)).forEach(function () {
                 var size = sizeHandler($(this));
                 if (parseFloat(size) > parseFloat(definitions[index])) {
                     definitions[index] = size + "px";
@@ -169,6 +168,18 @@ function ClearUndefined(variable, result) {
     }
     return variable;
 }
+
+Node.prototype.queryChildren = function queryChildren(selector) {
+    var selected = document.querySelectorAll(selector);
+    var matched = [];
+    for(var i = 0; i < selected.length; i++) {
+        var node = selected[i];
+        if(node.nodeType == 1 && node.parentNode === this) {
+            matched.push(node);
+        }
+    }
+    return matched;
+};
 
 
 $(window).load(function () {
