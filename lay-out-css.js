@@ -8,8 +8,7 @@
         // Set Columns
         GetDefinitionList(
             grid,
-            'div[data-columndefinitions]',
-            'div[data-columndefinition]',
+            'data-columndefinitions',
             'data-columndefinition',
             function (columns, sumPercentageColumns) {
                 columndefinitions =
@@ -27,8 +26,7 @@
         // Set Rows
         GetDefinitionList(
             grid,
-            'div[data-rowdefinitions]',
-            'div[data-rowdefinition]',
+            'data-rowdefinitions',
             'data-rowdefinition',
             function (rows, sumPercentageRows) {
                 rowdefinitions =
@@ -74,16 +72,19 @@
     };
 }
 
-function GetDefinitionList(container, rootselector, subselector, attribute, callback) {
+function GetDefinitionList(container, parentAttr, childAttr, callback) {
     var definitions = [];
     var sumPercentages = 0;
-    for(var definitionContainer in container.childNodes) {
-        if(definitionContainer.nodeType == 1 && definitionContainer.hasAttribute(rootselector)) {
-            var i = 0;
-            for(var definition in definitionContainer.childNodes) {
-                if(definition.hasAttribute(subselector)) {
-                    var definition = definition.getAttribute(attribute);
-                    definitions[i++] = definition;
+    var k = 0;
+    for(var i = 0; i < container.childNodes.length; i++) {
+        var definitionContainer = container.childNodes[i];
+        if(definitionContainer.nodeType == 1 && definitionContainer.hasAttribute(parentAttr)) {
+            for(var j = 0; j < definitionContainer.childNodes.length; j++) {
+                var definition = definitionContainer.childNodes[j];
+                if(definition.nodeType == 1 && definition.hasAttribute(childAttr)) {
+                    var definition = definition.getAttribute(childAttr);
+                    definitions[k++] = definition;
+                    console.log(definitions);
                     if (definition.indexOf("*") != -1) {
                         var prefix = parseFloat(definition);
                         if (isNaN(prefix)) {
