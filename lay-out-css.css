@@ -1,0 +1,29 @@
+.fullsize-body {
+    margin: 0;
+}
+
+.fullsize-container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* http://css-tricks.com/absolute-positioning-inside-relative-positioning/ */
+div[data-gridlayout]{
+    position: relative;
+}
+
+div[data-columndefinitions], div[data-rowdefinitions], div[data-columndefinitions] *, div[data-rowdefinitions] *{
+    display: none;
+}
+
+div[data-gridlayout]>*{
+    position: absolute;
+}
+
+
+
+/*
+    height: calc(100%/2 - 2*3px);
+*/

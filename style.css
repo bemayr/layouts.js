@@ -1,0 +1,28 @@
+.red {
+    color: white;
+    background-color: red;
+}
+
+.green {
+    color: white;
+    background-color: green;
+}
+
+.blue {
+    color: white;
+    background-color: blue;
+}
+
+.black {
+    color: white;
+    background-color: black;
+}
+
+.yellow {
+    color: black;
+    background-color: yellow;
+}
+
+.auto-width-test{
+    width: 150px;
+}
