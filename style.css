@@ -1,28 +1,20 @@
-.red {
-    color: white;
-    background-color: red;
-}
+.teal1 { background-color: #5EC4CD; }
+.teal2 { background-color: #35C0CD; }
+.teal3 { background-color: #028E9B; }
+.teal4 { background-color: #1E6D74; }
+.teal5 { background-color: #015C65; }
 
-.green {
-    color: white;
-    background-color: green;
-}
-
-.blue {
-    color: white;
-    background-color: blue;
-}
-
-.black {
-    color: white;
-    background-color: black;
-}
-
-.yellow {
-    color: black;
-    background-color: yellow;
-}
+.purple1 { background-color: #CF5FD3; }
+.purple2 { background-color: #CD35D3; }
+.purple3 { background-color: #A101A6; }
+.purple4 { background-color: #7A207D; }
+.purple5 { background-color: #68006C; }
 
 .auto-width-test{
     width: 150px;
+}
+
+div {
+    color: white;
+    font-family: sans-serif;
 }
