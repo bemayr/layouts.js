@@ -189,9 +189,6 @@ window.onload = function () {
     initializeGridLayout();
     console.log(new Date().getTime() - start);
 };
-window.onresize = function () {
-    initializeGridLayout();
-};
 
 
 
