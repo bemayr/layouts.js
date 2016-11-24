@@ -1,7 +1,5 @@
 ﻿function initializeGridLayout() {
     for (var grid of document.querySelectorAll('div[data-gridlayout]')) {
-        console.log(grid);
-
         var columndefinitions = [];
         var rowdefinitions = [];
 
@@ -17,7 +15,7 @@
                         SetPercentageDefinitions(columns, sumPercentageColumns),
                         "div[data-column='{0}']",
                         function (element) {
-                            return element.width();
+                            return element.offsetWidth;
                         }
                     );
                 console.log(columndefinitions);
@@ -35,7 +33,7 @@
                         SetPercentageDefinitions(rows, sumPercentageRows),
                         'div[data-row="{0}"]',
                         function (element) {
-                            return element.height();
+                            return element.offsetHeight;
                         }
                     );
                 console.log(rowdefinitions);
@@ -117,8 +115,8 @@ function SetAutoDefinitions(container, definitions, selector, sizeHandler) {
     definitions.forEach(function (element, index) {
         if (element == "auto") {
             definitions[index] = "0px";
-            container.queryChildren(selector.replace(/\{0\}/, index)).forEach(function () {
-                var size = sizeHandler($(this));
+            container.queryChildren(selector.replace(/\{0\}/, index)).forEach(function (children) {
+                var size = sizeHandler(children);
                 if (parseFloat(size) > parseFloat(definitions[index])) {
                     definitions[index] = size + "px";
                 }
@@ -182,14 +180,15 @@ Node.prototype.queryChildren = function queryChildren(selector) {
 };
 
 
-$(window).load(function () {
+document.onload = function () {
+    alert(demo);
     var start = new Date().getTime();
     initializeGridLayout();
     console.log(new Date().getTime() - start);
-});
-$(window).resize(function () {
+};
+window.onresize = function () {
     initializeGridLayout();
-});
+};
 
 
 
