@@ -1,0 +1,25 @@
+{
+  "name": "layouts.js",
+  "version": "0.1",
+  "description": "usable layout-managers for the web",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bemayr/layouts.js.git"
+  },
+  "keywords": [
+    "layout",
+    "layouts",
+    "grid",
+    "panel"
+  ],
+  "author": "Bernhard Mayr <bernhard@mayr.io> (https://blog.mayr.io)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bemayr/layouts.js/issues"
+  },
+  "homepage": "https://github.com/bemayr/layouts.js#readme"
+}

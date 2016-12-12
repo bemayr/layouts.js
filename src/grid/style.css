@@ -1,0 +1,14 @@
+/* http://css-tricks.com/absolute-positioning-inside-relative-positioning/ */
+div[data-gridlayout]{
+    position: relative;
+}
+
+div[data-columndefinitions], div[data-rowdefinitions], div[data-columndefinitions] *, div[data-rowdefinitions] *{
+    display: none;
+}
+
+div[data-gridlayout]>*{
+    box-sizing: border-box;
+    position: absolute;
+    overflow: auto;
+}
