@@ -1,10 +1,12 @@
 {
   "name": "layouts.js",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "usable layout-managers for the web",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup": "npm install",
+    "dev": "grunt devWatch",
+    "prod": ""
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,12 @@
   "bugs": {
     "url": "https://github.com/bemayr/layouts.js/issues"
   },
-  "homepage": "https://github.com/bemayr/layouts.js#readme"
+  "homepage": "https://github.com/bemayr/layouts.js#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-ts": "^6.0.0-beta.3",
+    "typescript": "^2.1.4"
+  }
 }
