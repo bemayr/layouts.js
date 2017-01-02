@@ -1,20 +1,22 @@
-﻿function initializeGridLayout() {
-	var grids = document.querySelectorAll('div[data-gridlayout]');
-	for (var i = 0; i < grids.length; i++) {
-		var grid = grids[i];
-		var columndefinitions = [];
-		var rowdefinitions = [];
+﻿declare var window: Window;
+
+function initializeGridLayout(): void {
+	let grids = document.querySelectorAll('div[data-gridlayout]');	
+	for (let i = 0; i < grids.length; i++) {
+		let grid = grids[i];
+		let columndefinitions = [];
+		let rowdefinitions = [];
 
 		// Set Columns
-		GetDefinitionList(
+		getDefinitionList(
 			grid,
 			'data-columndefinitions',
 			'data-columndefinition',
 			function (columns, sumPercentageColumns) {
 				columndefinitions =
-					SetAutoDefinitions(
+					setAutoDefinitions(
 						grid,
-						SetPercentageDefinitions(columns, sumPercentageColumns),
+						setPercentageDefinitions(columns, sumPercentageColumns),
 						"div[data-column='{0}']",
 						function (element) {
 							return element.offsetWidth;
@@ -24,15 +26,15 @@
 			}
 		);
 		// Set Rows
-		GetDefinitionList(
+		getDefinitionList(
 			grid,
 			'data-rowdefinitions',
 			'data-rowdefinition',
 			function (rows, sumPercentageRows) {
 				rowdefinitions =
-					SetAutoDefinitions(
+					setAutoDefinitions(
 						grid,
-						SetPercentageDefinitions(rows, sumPercentageRows),
+						setPercentageDefinitions(rows, sumPercentageRows),
 						'div[data-row="{0}"]',
 						function (element) {
 							return element.offsetHeight;
@@ -44,22 +46,22 @@
 
 		// Set Children Measurements
 		for (var j = 0; j < grid.childNodes.length; j++) {
-			var cell = grid.childNodes[j];
+			let cell = <HTMLElement>grid.childNodes[j];
 			if (cell.nodeType == 1 && !cell.hasAttribute('data-columndefinitions') &&
 				!cell.hasAttribute('data-rowdefinitions')) {
 
 
 				//       grid.childNodes(':not(div[data-columndefinitions],div[data-rowdefinitions])').each(function () {
 				//var cell = $(this);
-				var column = GetDefault(cell.getAttribute('data-column'), 0);
-				var row = GetDefault(cell.getAttribute('data-row'), 0);
-				var columnspan = GetDefault(cell.getAttribute('data-columnspan'), 1);
-				var rowspan = GetDefault(cell.getAttribute('data-rowspan'), 1);
+				var column = getDefault(cell.getAttribute('data-column'), 0);
+				var row = getDefault(cell.getAttribute('data-row'), 0);
+				var columnspan = getDefault(cell.getAttribute('data-columnspan'), 1);
+				var rowspan = getDefault(cell.getAttribute('data-rowspan'), 1);
 
-				var width = SumCellSize(columndefinitions, column, columnspan);
-				var height = SumCellSize(rowdefinitions, row, rowspan);
-				var left = SumCellSize(columndefinitions, 0, column);
-				var top = SumCellSize(rowdefinitions, 0, row);
+				var width = sumCellSize(columndefinitions, column, columnspan);
+				var height = sumCellSize(rowdefinitions, row, rowspan);
+				var left = sumCellSize(columndefinitions, 0, column);
+				var top = sumCellSize(rowdefinitions, 0, row);
 
 				cell.style.width = width;
 				cell.style.height = height;
@@ -72,12 +74,13 @@
 	};
 }
 
-function GetDefinitionList(container, parentAttr, childAttr, callback) {
-	var definitions = [];
-	var sumPercentages = 0;
-	var k = 0;
-	for (var i = 0; i < container.childNodes.length; i++) {
-		var definitionContainer = container.childNodes[i];
+function getDefinitionList(container, parentAttr: string, childAttr: string, callback: (any, number) => void) {
+	let definitions: any = [];
+	let sumPercentages = 0;
+	let k = 0;
+
+	for (let i = 0; i < container.childNodes.length; i++) {
+		let definitionContainer = container.childNodes[i];		
 		if (definitionContainer.nodeType == 1 && definitionContainer.hasAttribute(parentAttr)) {
 			for (var j = 0; j < definitionContainer.childNodes.length; j++) {
 				var definition = definitionContainer.childNodes[j];
@@ -95,13 +98,16 @@ function GetDefinitionList(container, parentAttr, childAttr, callback) {
 			}
 		}
 	}
+
 	if (definitions - length == 0) {
 		definitions[0] = "*";
 		sumPercentages = 1;
 	}
+
 	callback(definitions, sumPercentages);
 }
-function SetPercentageDefinitions(definitions, sumPercentages) {
+
+function setPercentageDefinitions(definitions, sumPercentages) {
 	definitions.forEach(function (element, index) {
 		if (element.indexOf("*") != -1) {
 			var prefix = parseFloat(element);
@@ -113,7 +119,8 @@ function SetPercentageDefinitions(definitions, sumPercentages) {
 	});
 	return definitions;
 }
-function SetAutoDefinitions(container, definitions, selector, sizeHandler) {
+
+function setAutoDefinitions(container, definitions, selector, sizeHandler) {
 	definitions.forEach(function (element, index) {
 		if (element == "auto") {
 			definitions[index] = "0px";
@@ -127,25 +134,27 @@ function SetAutoDefinitions(container, definitions, selector, sizeHandler) {
 	});
 	return definitions;
 }
-function GetCellSize(definitions, index) {
+
+function setCellSize(definitions, index) {
 	var definition = definitions[index];
 	if (definition.indexOf("%") == -1) {
 		return definition;
 	}
 	else {
-		var absoluteSum = GetAbsoluteSum(definitions);
+		var absoluteSum = getAbsoluteSum(definitions);
 		if (absoluteSum == "") {
 			absoluteSum = "0px";
 		}
 		return "((100% - (" + absoluteSum + ")) * " + parseFloat(definition) / 100 + ")";
 	}
 }
-function SumCellSize(definitions, startIndex, length) {
+
+function sumCellSize(definitions, startIndex, length) {
 	var cellSizes = [];
 	startIndex = parseFloat(startIndex);
 	length = parseFloat(length);
 	for (var i = startIndex; i < startIndex + length; i++) {
-		cellSizes[i - startIndex] = GetCellSize(definitions, i);
+		cellSizes[i - startIndex] = setCellSize(definitions, i);
 	}
 	if (cellSizes.length == 0) {
 		return "0px";
@@ -157,16 +166,18 @@ function SumCellSize(definitions, startIndex, length) {
 		return "calc(" + cellSizes.join(" + ") + ")";
 	}
 }
-function GetAbsoluteSum(definitions) {
+
+function getAbsoluteSum(definitions) {
 	return definitions.filter(function (element, index) {
 		return element.indexOf("%") == -1;
 	}).join(" + ");
 }
-function GetDefault(variable, defaultValue) {
+
+function getDefault(variable, defaultValue) {
 	return typeof variable !== "undefined" && variable ? variable : defaultValue;
 }
 
-Node.prototype.queryChildren = function queryChildren(selector) {
+(<any>Node.prototype).queryChildren = function queryChildren(selector) {
 	var selected = document.querySelectorAll(selector);
 	var matched = [];
 	for (var i = 0; i < selected.length; i++) {
@@ -179,10 +190,11 @@ Node.prototype.queryChildren = function queryChildren(selector) {
 };
 
 
-if (window.addEventListener) // IE9 Shim
-	window.addEventListener('load', initializeGridLayout)
-else
-	window.attachEvent('onload', initializeGridLayout)
+if (window.addEventListener) { // IE9 Shim
+	window.addEventListener('load', initializeGridLayout);
+} else {
+	(<any>window).attachEvent('onload', initializeGridLayout)
+}	
 
 
 /*
