@@ -4,7 +4,12 @@
   "description": "usable layout-managers for the web",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -p . && webpack && webpack --optimize-minimize",
+    "unittest": "mocha ./lib/tests/**/*.js",
+    "test": "npm run build && npm run unittest",
+    "preversion": "npm run build",
+    "postversion": "git push --follow-tags && npm publish",
+    "start": "npm run build -- -w & npm run unittest -- --watch"
   },
   "repository": {
     "type": "git",
@@ -21,5 +26,10 @@
   "bugs": {
     "url": "https://github.com/bemayr/layouts.js/issues"
   },
-  "homepage": "https://github.com/bemayr/layouts.js#readme"
+  "homepage": "https://github.com/bemayr/layouts.js#readme",
+  "devDependencies": {
+    "typescript": "^2.2.2",
+    "webpack": "2.3.3"
+  },
+  "dependencies": {}
 }
