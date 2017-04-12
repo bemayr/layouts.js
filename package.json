@@ -1,6 +1,6 @@
 {
   "name": "layouts.js",
-  "version": "0.1",
+  "version": "0.0.1",
   "description": "usable layout-managers for the web",
   "main": "index.js",
   "scripts": {
